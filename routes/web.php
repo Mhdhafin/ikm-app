@@ -6,3 +6,11 @@ Route::get('/', function () {
     return inertia('home');
 });
 
+Route::get('/about', function () {
+    return inertia('about');
+});
+
+Route::get('/contact', function () {
+    return inertia('contact');
+});
+
