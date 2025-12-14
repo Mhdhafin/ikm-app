@@ -10,7 +10,13 @@ class Mahasiswa extends Model
 
     protected $guarded = ['id'];
 
-     public function pengajuan()
+
+    public function user()
+{
+    return $this->belongsTo(User::class);
+}
+
+    public function pengajuan()
     {
         return $this->hasMany(Pengajuan_kelas::class);
     }

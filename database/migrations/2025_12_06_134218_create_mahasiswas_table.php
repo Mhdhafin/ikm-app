@@ -11,8 +11,12 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('mahasiswas', function (Blueprint $table) {
-            $table->id(); // primary key default
-            $table->string('nim')->unique(); // jadikan unique bukan primary
+            $table->id(); 
+            $table->string('nim')->unique();
+            $table->foreignId('user_id')
+              ->after('id')
+              ->constrained('users')
+              ->cascadeOnDelete();
             $table->string('nama', 100);
             $table->string('prodi', 50);
             $table->integer('semester');

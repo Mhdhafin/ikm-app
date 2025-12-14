@@ -8,7 +8,13 @@ class Pengajuan_kelas extends Model
 {
     protected $table = 'pengajuan_kelas';
 
-    protected $guarded = ['id'];
+    protected $fillable = [
+        'mahasiswa_id',
+        'mata_kuliah',
+        'kelas',
+        'alasan',
+        'status',
+    ];
 
     public function mahasiswa()
     {
