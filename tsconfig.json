@@ -8,7 +8,13 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "allowJs": true,
-    "noEmit": true
+    "noEmit": true,
+    "baseUrl": ".", 
+    "paths": {
+      "@/*": ["resources/js/*"], 
+      "@components/*": ["resources/js/components/*"], 
+      "@utils/*": ["resources/js/utils/*"]
+    }
   },
   "include": ["resources/**/*"]
 }
