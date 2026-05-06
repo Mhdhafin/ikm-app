@@ -1,22 +1,24 @@
 import { Head, useForm } from "@inertiajs/react";
-import { LoginForm } from "../../components/login-form";
 import AuthLayout from "../../layouts/auth-layout";
+import { RegisterForm } from "../../components/registerForm";
 
-export default function Login() {
+export default function Register() {
     const { data, setData, post, processing, errors } = useForm({
+        name: "",
         email: "",
         password: "",
+        role: "",
     });
 
     function submit(e: React.FormEvent) {
         e.preventDefault();
-        post("/login");
+        post("/register"); // arahkan ke route register
     }
 
     return (
         <>
-            <Head title="Login" />
-            <LoginForm
+            <Head title="Register" />
+            <RegisterForm
                 data={data}
                 errors={errors}
                 processing={processing}
@@ -27,4 +29,4 @@ export default function Login() {
     );
 }
 
-Login.layout = (page: React.ReactNode) => <AuthLayout>{page}</AuthLayout>;
+Register.layout = (page: React.ReactNode) => <AuthLayout>{page}</AuthLayout>;

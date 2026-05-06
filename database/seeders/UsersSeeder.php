@@ -24,10 +24,16 @@ class UsersSeeder extends Seeder
         ]);
 
         User::create([
-            'name'     => 'Bagian Akademik',
-            'email'    => 'akademik@kampus.ac.id',
+            'name'     => 'IKM',
+            'email'    => 'ikm@kampus.ac.id',
             'password' => Hash::make('password'),
-            'role'     => 'akademik',
+            'role'     => 'ikm',
+        ]);
+        User::create([
+            'name'     => 'Mahasiswa',
+            'email'    => 'mahasiswa@kampus.ac.id',
+            'password' => Hash::make('password'),
+            'role'     => 'mahasiswa',
         ]);
 
         // User::create([

@@ -46,9 +46,35 @@ class User extends Authenticatable
         ];
     }
 
-    public function mahasiswa()
+    
+    public function isRole($role) {
+        return $this->role === $role;
+    }
+
+public function forums()
 {
-    return $this->hasOne(Mahasiswa::class);
+    return $this->hasMany(Forum::class);
 }
+
+public function replies()
+{
+    return $this->hasMany(Reply::class);
+}
+
+public function ikmConsultations()
+{
+    return $this->hasMany(Consultation::class, 'ikm_id');
+}
+
+public function mahasiswaConsultations()
+{
+    return $this->hasMany(Consultation::class, 'mahasiswa_id');
+}
+
+public function dosenConsultations()
+{
+    return $this->hasMany(Consultation::class, 'dosen_id');
+}
+
 
 }

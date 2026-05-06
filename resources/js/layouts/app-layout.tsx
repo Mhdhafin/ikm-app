@@ -1,30 +1,29 @@
-import { AppHeader } from "@/components/app-header";
-import AppSidebar from "@/components/app-sidebar";
-import { SectionCards } from "@/components/section-cards";
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import { usePage } from "@inertiajs/react";
 import { PropsWithChildren } from "react";
+import { useEffect } from "react";
+import { usePage } from "@inertiajs/react";
+import { toast, Toaster } from "sonner";
+// import { Geist, Geist_Mono } from "next/font/google";
+// import { Analytics } from "@vercel/analytics/next";
 
-export default function AppLayout ({children } : PropsWithChildren) {
+export default function AppLayout({ children }: PropsWithChildren) {
+    const { flash } = usePage<{ flash: { success?: string; error?: string } }>()
+        .props;
+
+    useEffect(() => {
+        if (flash?.success) {
+            toast.success(flash.success);
+        }
+        if (flash?.error) {
+            toast.error(flash.error);
+        }
+    }, [flash]);
     return (
-      
-  <SidebarProvider>
-  {/* Sidebar */}
-    <AppSidebar/>
-
-  {/* Konten utama */}
-  <SidebarInset>
-    <AppHeader />
-    <div className="flex flex-1 flex-col">
-      <div className="@container/main flex flex-1 flex-col gap-2">
-        <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
-          {/* <SectionCards /> */}
-          {children}
-        </div>
-      </div>
-    </div>
-  </SidebarInset>
-</SidebarProvider>
-
-    )
+        <html lang="en" className="bg-background">
+            <body className="font-sans antialiased">
+                {children}
+                {/* {process.env.NODE_ENV === "production" && <Analytics />} */}
+                <Toaster richColors position="top-right" />
+            </body>
+        </html>
+    );
 }
