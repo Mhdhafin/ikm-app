@@ -11,7 +11,7 @@ class Forum extends Model
     // ];
 
     protected $fillable = [
-    'judul', 'deskripsi', 'user_id'
+    'judul', 'deskripsi', 'user_id', 'category_id'
     ];
 
     public function user()
@@ -22,6 +22,10 @@ class Forum extends Model
 public function replies()
 {
     return $this->hasMany(Reply::class);
+}
+
+public function category() {
+    return $this->belongsTo(Category::class);
 }
 
 

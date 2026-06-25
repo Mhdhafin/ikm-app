@@ -55,7 +55,7 @@ export function ReplyForm({ onSubmit, isLoading = false }: ReplyFormProps) {
                         }}
                         placeholder="Tulis balasan Anda di sini..."
                         rows={5}
-                        className={`w-full px-4 py-3 rounded-lg border transition-colors bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50 resize-none ${
+                        className={`w-full px-4 py-3 rounded-lg border transition-colors bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none ${
                             error ? "border-red-500" : "border-border"
                         }`}
                     />
@@ -76,13 +76,28 @@ export function ReplyForm({ onSubmit, isLoading = false }: ReplyFormProps) {
                         id="file"
                         type="file"
                         accept="image/*,.pdf,.doc,.docx"
-                        onChange={(e) => setFile(e.target.files?.[0])}
-                        className="w-full px-4 py-2 rounded-lg border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-accent/50"
+                        onChange={(e) => {
+                            const selectedFile = e.target.files?.[0];
+                            if (selectedFile) {
+                                if (selectedFile.size > 5 * 1024 * 1024) {
+                                    // 5MB
+                                    setError("Ukuran file maksimal 5MB");
+                                    setFile(undefined);
+                                    return;
+                                }
+                                setFile(selectedFile);
+                                setError(""); // reset error jika valid
+                            }
+                        }}
+                        className="w-full px-4 py-2 rounded-lg border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                     {file && (
                         <p className="text-xs text-gray-500 mt-1">
                             File terpilih: {file.name}
                         </p>
+                    )}
+                    {error && (
+                        <p className="text-xs text-red-500 mt-1">{error}</p>
                     )}
                 </div>
 
@@ -91,7 +106,7 @@ export function ReplyForm({ onSubmit, isLoading = false }: ReplyFormProps) {
                     <button
                         type="submit"
                         disabled={isLoading}
-                        className="px-8 py-3 bg-accent text-accent-foreground rounded-lg font-semibold hover:bg-accent/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                        className="px-8 py-3  bg-blue-600 cursor-pointer text-white rounded-lg font-semibold hover:bg-blue-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                     >
                         <Send size={18} />
                         {isLoading ? "Mengirim..." : "Kirim Balasan"}

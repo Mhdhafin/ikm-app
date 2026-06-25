@@ -91,7 +91,7 @@ export function DiscussionReplies({ replies }: { replies: Reply[] }) {
                                                 `/storage/${reply.attachment}`,
                                             )
                                         }
-                                        className="duration-300 text-blue-600 hover:text-blue-400 bg-blue-300 rounded-2xl px-6 py-2 text-sm hover:bg-blue-200"
+                                        className="duration-300 cursor-pointer bg-blue-600 rounded-2xl px-6 py-2 text-sm text-white hover:bg-blue-500"
                                     >
                                         Lihat Lampiran
                                     </button>

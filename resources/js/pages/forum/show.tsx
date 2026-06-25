@@ -8,6 +8,7 @@ import {
     UserRoundPen,
     RollerCoaster,
     ShieldUser,
+    Tag,
 } from "lucide-react";
 import { Navbar } from "../../components/navbar";
 import { Footer } from "../../components/footer";
@@ -54,17 +55,7 @@ export default function Show() {
                 </button>
 
                 {/* Forum Detail */}
-                {/* <div className="bg-white rounded-2xl p-8 shadow mb-8">
-                    <h1 className="text-3xl font-bold mb-2">{forum.judul}</h1>
-                    <p className="text-gray-700 leading-relaxed text-lg">
-                        {forum.deskripsi}
-                    </p>
-                    <div className="flex flex-wrap gap-2 mt-6">
-                        <span className="px-4 py-2 bg-blue-50 text-blue-600 rounded-full text-sm font-semibold">
-                            {forum.category}
-                        </span>
-                    </div>
-                </div> */}
+
                 <div className="bg-card rounded-2xl p-8 border border-border mb-8">
                     <div className="flex items-start gap-4 mb-6">
                         <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center text-3xl flex-shrink-0">
@@ -90,6 +81,13 @@ export default function Show() {
                                     <Clock size={16} />
                                     <span>{formatDate(forum.created_at)}</span>
                                 </div>
+                                <div className="flex items-center gap-1">
+                                    <Tag size={16} />{" "}
+                                    {/* gunakan icon sesuai kebutuhan, misalnya Tag */}
+                                    <span>
+                                        Kategori: {forum.category?.name}
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -99,12 +97,6 @@ export default function Show() {
                     <p className="text-card-foreground leading-relaxed text-lg">
                         {forum.deskripsi}
                     </p>
-
-                    {/* <div className="flex flex-wrap gap-2 mt-6">
-                        <span className="inline-flex items-center gap-1 px-4 py-2 bg-accent/10 text-accent rounded-full text-sm font-semibold">
-                            {discussion.category}
-                        </span>
-                    </div> */}
                 </div>
 
                 {/* Replies */}

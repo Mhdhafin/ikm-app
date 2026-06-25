@@ -9,23 +9,23 @@ class ReplyController extends Controller
 {
     public function store(Request $request, $forumId)
     {
-        
-    $request->validate([
+
+     $request->validate([
         'isi' => 'required|string',
-        'file' => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:2048',
+        'file' => 'nullable|image|max:5120', // max 5MB
     ]);
 
-    $path = null;
-    if ($request->hasFile('file')) {
-        $path = $request->file('file')->store('replies', 'public');
-    }
-
-    Reply::create([
+    $reply = Reply::create([
+        'isi' => $request->isi,
+        'user_id' => auth()->id(),
         'forum_id' => $forumId,
-        'user_id'  => auth()->id(),
-        'isi'      => $request->isi,
-        'attachment' => $path,
     ]);
+
+    if ($request->hasFile('file')) {
+        $path = $request->file('file')->store('attachments', 'public');
+        $reply->attachment = $path;
+        $reply->save();
+    }
 
     return redirect()->route('forum.show', $forumId)->with('success', 'Balasan berhasil ditambahkan!');
 

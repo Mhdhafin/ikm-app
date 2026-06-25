@@ -1,23 +1,30 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { X } from "lucide-react";
 
 interface AddQuestionModalProps {
     isOpen: boolean;
     onClose: () => void;
-    onSubmit: (data: { judul: string; deskripsi: string }) => void;
+    onSubmit: (data: {
+        judul: string;
+        deskripsi: string;
+        category_id: number;
+    }) => void;
+    categories: { id: number; name: string }[]; // daftar kategori dari backend
 }
 
 export function AddQuestionModal({
     isOpen,
     onClose,
     onSubmit,
+    categories,
 }: AddQuestionModalProps) {
     const [judul, setTitle] = useState("");
     const [deskripsi, setDescription] = useState("");
-    // const [category, setCategory] = useState("Branding");
+    const [category_id, setCategoryId] = useState<number | null>(null);
     const [errors, setErrors] = useState<{
         judul?: string;
         deskripsi?: string;
+        category_id?: string;
     }>({});
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isClosing, setIsClosing] = useState(false);
@@ -29,8 +36,13 @@ export function AddQuestionModal({
             setIsClosing(false);
         }, 200);
     };
+
     const validateForm = () => {
-        const newErrors: { judul?: string; deskripsi?: string } = {};
+        const newErrors: {
+            judul?: string;
+            deskripsi?: string;
+            category_id?: string;
+        } = {};
 
         if (!judul.trim()) {
             newErrors.judul = "Judul pertanyaan tidak boleh kosong";
@@ -46,6 +58,10 @@ export function AddQuestionModal({
             newErrors.deskripsi = "Deskripsi minimal harus 20 karakter";
         }
 
+        if (!category_id) {
+            newErrors.category_id = "Kategori harus dipilih";
+        }
+
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
@@ -53,22 +69,19 @@ export function AddQuestionModal({
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (!validateForm()) {
-            return;
-        }
+        if (!validateForm()) return;
 
         setIsSubmitting(true);
 
-        // Simulate API call
         setTimeout(() => {
             onSubmit({
                 judul,
                 deskripsi,
-                // category,
+                category_id: category_id!, // kirim id kategori
             });
             setTitle("");
             setDescription("");
-            // setCategory("Branding");
+            setCategoryId(null);
             setErrors({});
             setIsSubmitting(false);
             handleClose();
@@ -116,136 +129,61 @@ export function AddQuestionModal({
 
                     {/* Form */}
                     <form onSubmit={handleSubmit} className="p-6 space-y-6">
-                        {/* Category Select */}
-                        {/* <div>
-                            <label
-                                htmlFor="category"
-                                className="block text-sm font-semibold text-foreground mb-2"
-                            >
-                                Kategori
-                            </label>
-                            <select
-                                id="category"
-                                value={category}
-                                onChange={(e) => setCategory(e.target.value)}
-                                className="w-full px-4 py-3 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition-all"
-                            >
-                                {categories.map((cat) => (
-                                    <option key={cat} value={cat}>
-                                        {cat}
-                                    </option>
-                                ))}
-                            </select>
-                        </div> */}
-
-                        {/* Title Input */}
-                        <div>
-                            <label
-                                htmlFor="title"
-                                className="block text-sm font-semibold text-foreground mb-2"
-                            >
-                                Judul Pertanyaan
-                            </label>
+                        <div className="flex justify-between items-center gap-5">
+                            {/* Judul */}
                             <input
-                                id="title"
                                 type="text"
                                 value={judul}
-                                onChange={(e) => {
-                                    setTitle(e.target.value);
-                                    if (errors.judul)
-                                        setErrors({
-                                            ...errors,
-                                            judul: undefined,
-                                        });
-                                }}
-                                placeholder="Contoh: Bagaimana cara meningkatkan penjualan online?"
-                                maxLength={100}
-                                className={`w-full px-4 py-3 border rounded-lg bg-background text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 transition-all ${
-                                    errors.judul
-                                        ? "border-red-500 focus:border-red-500 focus:ring-red-500/20"
-                                        : "border-border focus:border-accent focus:ring-accent/20"
-                                }`}
+                                onChange={(e) => setTitle(e.target.value)}
+                                placeholder="Judul"
+                                className="w-full border rounded p-2"
                             />
-                            <div className="flex items-center justify-between mt-2">
-                                {errors.judul && (
-                                    <p className="text-sm text-red-500">
-                                        {errors.judul}
-                                    </p>
-                                )}
-                                <p
-                                    className={`text-xs ml-auto ${judul.length >= 90 ? "text-red-500" : "text-muted-foreground"}`}
+                            {errors.judul && (
+                                <p className="text-red-500">{errors.judul}</p>
+                            )}
+
+                            {/* Category Select */}
+                            {categories.length > 0 && (
+                                <select
+                                    value={category_id ?? ""}
+                                    onChange={(e) =>
+                                        setCategoryId(Number(e.target.value))
+                                    }
+                                    className="w-full cursor-pointer border rounded p-2"
                                 >
-                                    {judul.length}/100
+                                    <option value="">Pilih Kategori</option>
+                                    {categories.map((cat) => (
+                                        <option key={cat.id} value={cat.id}>
+                                            {cat.name}
+                                        </option>
+                                    ))}
+                                </select>
+                            )}
+                            {errors.category_id && (
+                                <p className="text-red-500">
+                                    {errors.category_id}
                                 </p>
-                            </div>
+                            )}
                         </div>
 
-                        {/* Description Textarea */}
-                        <div>
-                            <label
-                                htmlFor="description"
-                                className="block text-sm font-semibold text-foreground mb-2"
-                            >
-                                Deskripsi Detail
-                            </label>
-                            <textarea
-                                id="deskripsi"
-                                value={deskripsi}
-                                onChange={(e) => {
-                                    setDescription(e.target.value);
-                                    if (errors.deskripsi)
-                                        setErrors({
-                                            ...errors,
-                                            deskripsi: undefined,
-                                        });
-                                }}
-                                placeholder="Jelaskan pertanyaan Anda secara detail untuk mendapatkan jawaban yang lebih baik..."
-                                rows={6}
-                                maxLength={1000}
-                                className={`w-full px-4 py-3 border rounded-lg bg-background text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 transition-all resize-none ${
-                                    errors.deskripsi
-                                        ? "border-red-500 focus:border-red-500 focus:ring-red-500/20"
-                                        : "border-border focus:border-accent focus:ring-accent/20"
-                                }`}
-                            />
-                            <div className="flex items-center justify-between mt-2">
-                                {errors.deskripsi && (
-                                    <p className="text-sm text-red-500">
-                                        {errors.deskripsi}
-                                    </p>
-                                )}
-                                <p
-                                    className={`text-xs ml-auto ${deskripsi.length >= 900 ? "text-red-500" : "text-muted-foreground"}`}
-                                >
-                                    {deskripsi.length}/1000
-                                </p>
-                            </div>
-                        </div>
+                        {/* Deskripsi */}
+                        <textarea
+                            value={deskripsi}
+                            onChange={(e) => setDescription(e.target.value)}
+                            placeholder="Deskripsi"
+                            className="w-full border rounded p-2"
+                        />
+                        {errors.deskripsi && (
+                            <p className="text-red-500">{errors.deskripsi}</p>
+                        )}
 
-                        {/* Submit Buttons */}
-                        <div className="flex gap-3 justify-end pt-6 border-t border-border">
-                            <button
-                                type="button"
-                                onClick={handleClose}
-                                className="px-6 py-3 border border-border rounded-lg text-foreground font-medium hover:bg-muted transition-colors"
-                            >
-                                Batal
-                            </button>
-                            <button
-                                type="submit"
-                                disabled={isSubmitting}
-                                className="px-6 py-3 bg-accent text-accent-foreground rounded-lg font-semibold hover:bg-accent/90 disabled:bg-accent/50 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
-                            >
-                                {isSubmitting ? (
-                                    <>
-                                        <div className="w-4 h-4 border-2 border-transparent border-t-accent-foreground rounded-full animate-spin" />
-                                        Mengirim...
-                                    </>
-                                ) : (
-                                    "Posting Pertanyaan"
-                                )}
-                            </button>
-                        </div>
+                        <button
+                            type="submit"
+                            disabled={isSubmitting}
+                            className="px-6 py-2 bg-blue-600 cursor-pointer text-white rounded-lg hover:bg-blue-500"
+                        >
+                            {isSubmitting ? "Menyimpan..." : "Simpan"}
+                        </button>
                     </form>
                 </div>
             </div>

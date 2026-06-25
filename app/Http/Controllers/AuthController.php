@@ -30,29 +30,7 @@ class AuthController extends Controller
         return redirect()->intended('/');
     }
 
-    public function register(Request $request)
-    {
-        // Validasi input
-        $request->validate([
-            'name'     => 'required|string|max:255',
-            'email'    => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed', 
-            'role'     => 'required|in:ikm,mahasiswa,dosen',
-        ]);
 
-        // Simpan user baru
-        $user = User::create([
-            'name'     => $request->name,
-            'email'    => $request->email,
-            'password' => Hash::make($request->password),
-            'role'     => $request->role,
-        ]);
-
-        // Login otomatis setelah register
-        auth()->login($user);
-
-        return redirect()->route('forum.index')->with('success', 'Registrasi berhasil!');
-    }
 
     public function destroy(Request $request)
     {
