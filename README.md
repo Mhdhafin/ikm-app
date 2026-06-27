@@ -64,3 +64,23 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+---
+
+# 🚀 Setup Instalasi Laravel di Local
+
+## 1. Persiapan Environment
+- PHP ≥ 8.1  
+- Composer  
+- MySQL/MariaDB  
+- Node.js & NPM  
+- Git (opsional)
+
+## 2. Clone Repository
+```bash
+git clone https://github.com/username/nama-project.git
+cd nama-project
+
+## 2. Clone Repository
+composer install
+npm install
