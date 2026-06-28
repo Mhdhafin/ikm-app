@@ -44,7 +44,10 @@ export function Konsultasi() {
     ];
 
     return (
-        <section className="py-16 bg-linear-to-br from-background via-background to-muted/20">
+        <section
+            id="konsultasi"
+            className="py-16 bg-linear-to-br from-background via-background to-muted/20"
+        >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <h2 className="text-4xl font-bold text-center mb-16 text-foreground">
                     KONSULTASI LANGSUNG

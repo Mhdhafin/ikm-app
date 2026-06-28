@@ -5,7 +5,6 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ForumController;
 use App\Http\Controllers\RegisterController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 // Route::get('/', fn () => inertia('auth/login'));
@@ -19,27 +18,24 @@ use Inertia\Inertia;
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'create'])->name('login');
     Route::post('/login', [AuthController::class, 'store']);
-    
+
     Route::get('/register', [RegisterController::class, 'index'])->name('register.index');
     Route::post('/register', [RegisterController::class, 'register'])->name('register.post');
 });
 
-Route::post('/logout', [AuthController::class, 'destroy'])
+    Route::post('/logout', [AuthController::class, 'destroy'])
             ->middleware('auth');
 
-   Route::middleware('auth')->group(function () {
+Route::middleware('auth')->group(function () {
 
-   Route::get('/halal', function () {
-    $logo = Storage::url('halal/halal-logo.png');
-    return Inertia::render('halal/index', [
-        'logo' => $logo,
-    ]);
-})->name('halal');
-    
+//    Route::get('/halal', function () {
+
+//     })->name('halal');
+
         Route::get('/', [ForumController::class, 'index'])->name('forum');
         Route::get('/forum/{id}', [ForumController::class, 'show'])->name('forum.show');
-        
-        
+
+
 
 
 

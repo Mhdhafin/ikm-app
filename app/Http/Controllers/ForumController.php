@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Forum;
 use App\Models\Category;
+use Illuminate\Support\Facades\Storage;
 
 class ForumController extends Controller
 {
@@ -15,12 +16,22 @@ class ForumController extends Controller
         ->withCount('replies')
         ->latest()
         ->get();
+        $logoHalal = asset('storage/halal/halal-logo.png');
+        $logoNib   = asset('storage/nib/nib-logo.png');
+        $logoIkm  = asset('storage/ikm/logo-hero.png');
+
+
         $categories = Category::all();
+
+        // dd($logoHero);
 
     return Inertia::render('forum/index', [
         'auth'   => ['user' => auth()->user() ?? null],
         'categories' => $categories,
         'forums' => $forums,
+        'logoHalal' => $logoHalal,
+        'logoNib' => $logoNib,
+        'logoIkm' => $logoIkm,
     ]);
     }
 

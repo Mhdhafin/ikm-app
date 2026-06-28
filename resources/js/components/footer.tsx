@@ -11,7 +11,7 @@ export function Footer() {
                             <div className="w-8 h-8 bg-primary-foreground rounded-lg flex items-center justify-center text-primary">
                                 <MessageSquare />
                             </div>
-                            <span>Forum IKM</span>
+                            <span>Evolis</span>
                         </div>
                         <p className="text-sm opacity-80">
                             Menghubungkan IKM dengan Kampus untuk solusi bisnis

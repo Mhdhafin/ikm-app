@@ -123,12 +123,13 @@ export default function Show() {
                 </div>
 
                 {/* Reply Form */}
-                {auth.user.role === "mahasiswa" && (
-                    <ReplyForm
-                        onSubmit={handleReplySubmit}
-                        isLoading={isLoading}
-                    />
-                )}
+                {auth.user.role === "mahasiswa" ||
+                    (auth.user.role === "dosen" && (
+                        <ReplyForm
+                            onSubmit={handleReplySubmit}
+                            isLoading={isLoading}
+                        />
+                    ))}
             </main>
 
             <Footer />
